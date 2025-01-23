@@ -1,6 +1,15 @@
 const Role = require("../models/Role");
 const User = require("../models/User");
 
+exports.getAllRoles = async (req, res) => {
+  try {
+    const users = await Role.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
 exports.createRole = async (req, res) => {
   try {
     const { name } = req.body;

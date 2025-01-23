@@ -4,8 +4,10 @@ const roleRoutes = require("./routes/roleRoutes");
 const userRoutes = require("./routes/userRoutes");
 const connectDB = require("./config/mongo-db");
 const { seedRoles, seedSuperAdmin } = require("./config/dbSeed");
+const routes = require("./config/routesConfig");
 
 const app = express();
+const router = express.Router();
 app.use(express.json());
 
 connectDB();
@@ -14,12 +16,11 @@ connectDB();
 seedRoles();
 seedSuperAdmin();
 
-// Existing routes
-app.use("/api/auth", authRoutes);
-app.use("/api/roles", roleRoutes);
-
-// Add user routes
-app.use("/api/users", userRoutes);
+// Dynamically register routes
+routes.forEach((route) => {
+  const middlewares = route.middlewares || [];
+  app[route.method](route.path, ...middlewares, route.controller);
+});
 
 // Global error handling middleware
 app.use((err, req, res, next) => {
