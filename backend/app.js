@@ -21,4 +21,12 @@ app.use("/api/roles", roleRoutes);
 // Add user routes
 app.use("/api/users", userRoutes);
 
+// Global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res
+    .status(500)
+    .json({ message: "Internal server error", error: err.message });
+});
+
 module.exports = app;
