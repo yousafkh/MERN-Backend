@@ -1,5 +1,6 @@
 const Role = require("../models/Role");
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 exports.seedRoles = async () => {
@@ -29,10 +30,15 @@ exports.seedSuperAdmin = async () => {
         throw Error(
           "SUPERADMIN_PASSWORD is not defined in .env file for seeding."
         );
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(
+        process.env.SUPERADMIN_PASSWORD,
+        10
+      );
       const superAdmin = new User({
         name: "Super Admin",
         email: "superadmin",
-        password: process.env.SUPERADMIN_PASSWORD,
+        password: hashedPassword,
         roles: [superAdminRole._id],
       });
       await superAdmin.save();
