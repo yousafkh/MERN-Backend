@@ -6,7 +6,7 @@ const {
 } = require("../middlewares/authMiddleware");
 const router = express.Router();
 
-router.post("/", authenticateToken, authorizeRole("admin"), createRole);
-router.post("/assign", authenticateToken, authorizeRole("admin"), assignRole);
+router.post("/", authenticateToken, authorizeRole(["admin"]), createRole);
+router.post("/assign", authenticateToken, authorizeRole(["admin"]), assignRole);
 
 module.exports = router;

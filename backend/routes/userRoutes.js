@@ -12,13 +12,18 @@ const {
 const router = express.Router();
 
 // Route to create a user with specific roles (Admin-only)
-router.post("/", authenticateToken, authorizeRole("admin"), createUser);
+router.post("/create", authenticateToken, authorizeRole(["admin"]), createUser);
 
 // Route to get all users (Admin-only)
-router.get("/", authenticateToken, authorizeRole("admin"), getAllUsers);
+router.get(
+  "/",
+  authenticateToken,
+  authorizeRole(["admin", "user"]),
+  getAllUsers
+);
 
 // Route to get a user by ID (Admin-only)
-router.get("/:id", authenticateToken, authorizeRole("admin"), getUserById);
+router.get("/:id", authenticateToken, authorizeRole(["admin"]), getUserById);
 
 // Route to update a user's roles (Admin-only)
 router.put(
