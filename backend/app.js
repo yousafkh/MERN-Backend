@@ -1,10 +1,7 @@
 const express = require("express");
-const authRoutes = require("./routes/authRoutes");
-const roleRoutes = require("./routes/roleRoutes");
-const userRoutes = require("./routes/userRoutes");
 const connectDB = require("./config/mongo-db");
 const { seedRoles, seedSuperAdmin } = require("./config/dbSeed");
-const routes = require("./config/routesConfig");
+const routes = require("./routes/routesConfig");
 
 const app = express();
 const router = express.Router();

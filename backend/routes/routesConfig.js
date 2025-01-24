@@ -8,6 +8,7 @@ const roleController = require("../controllers/roleController");
 
 const userRoutesPrefix = "/api/users";
 const authRoutesPrefix = "/api/auth";
+const rolesRoutesPrefix = "/api/roles";
 
 const routes = [
   {
@@ -26,7 +27,7 @@ const routes = [
   },
   {
     name: "Get all users",
-    path: `${userRoutesPrefix}/api/users/`,
+    path: `${userRoutesPrefix}/`,
     method: "get",
     middlewares: [
       authenticateToken,
@@ -43,23 +44,29 @@ const routes = [
     ],
     controller: userController.getUserById,
   },
+  // {
+  //   path: `${userRoutesPrefix}/:id/update-roles`,
+  //   method: "patch",
+  //   middlewares: [authenticateToken, authorizeRole(["admin", "superadmin"])],
+  //   controller: userController.updateUserRoles,
+  // },
   {
-    path: `${userRoutesPrefix}/api/users/:id/update-roles`,
-    method: "put",
-    middlewares: [authenticateToken, authorizeRole(["admin", "superadmin"])],
-    controller: userController.updateUserRoles,
-  },
-  {
-    path: "/api/roles",
+    path: `${rolesRoutesPrefix}/`,
     method: "get",
     middlewares: [authenticateToken, authorizeRole(["admin", "superadmin"])],
     controller: roleController.getAllRoles,
   },
   {
-    path: "/api/roles/create",
+    path: `${rolesRoutesPrefix}/create`,
     method: "post",
     middlewares: [authenticateToken, authorizeRole(["admin", "superadmin"])],
     controller: roleController.createRole,
+  },
+  {
+    path: `${rolesRoutesPrefix}/assign`,
+    method: "put",
+    middlewares: [authenticateToken, authorizeRole(["admin", "superadmin"])],
+    controller: roleController.assignRole,
   },
 ];
 

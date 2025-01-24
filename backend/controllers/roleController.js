@@ -17,7 +17,7 @@ exports.createRole = async (req, res) => {
     await role.save();
     res.status(201).json({ message: "Role created successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: `Server error: ${err.message}` });
   }
 };
 

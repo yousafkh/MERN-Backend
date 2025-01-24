@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     // Check if the user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).populate("roles");
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Verify password
@@ -48,10 +48,15 @@ exports.login = async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ message: "Invalid credentials" });
 
+    const userRoles = user.roles.map((role) => role.name);
     // Generate token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, roles: userRoles },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
 
     res.json({ token });
   } catch (err) {

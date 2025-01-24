@@ -25,13 +25,13 @@ const authorizeRole = (allowedRoles) => {
       }
 
       // Get user from request (populated in the authentication middleware)
-      const user = await User.findById(req.user.id).populate("roles");
+      const user = req.user;
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
       // Check if the user's roles match any allowed role
-      const userRoles = user.roles.map((role) => role.name);
+      const userRoles = req.user.roles;
       const isAuthorized = allowedRoles.some((role) =>
         userRoles.includes(role)
       );
